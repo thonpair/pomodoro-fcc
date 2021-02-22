@@ -86,7 +86,7 @@ export default {
         }
         this.sessionRunning = !this.sessionRunning;
       }
-      this.timeOut = window.setTimeout(this.updateTimeLeft, 10);
+      this.timeOut = window.setTimeout(this.updateTimeLeft, 1000);
     },
     plusSessionLen() {
       if (this.sessionLen < 59) {
