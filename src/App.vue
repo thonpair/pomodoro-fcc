@@ -1,38 +1,35 @@
 <template>
   <div id="app">
     <div id="break">
-    <label id="break-label">Break length</label>
-    <button
-      id="break-decrement"
-      v-on:click="breakLen > 1 ? breakLen-- : breakLen"
-    >
-      -
-    </button>
-    <button
-      id="break-increment"
-      v-on:click="breakLen < 59 ? breakLen++ : breakLen"
-    >
-      +
-    </button>
-    <p id="break-length">{{ breakLen }}</p>
+      <label id="break-label">Break length</label>
+      <button
+        id="break-decrement"
+        v-on:click="breakLen > 1 ? breakLen-- : breakLen"
+      >
+        -
+      </button>
+      <button
+        id="break-increment"
+        v-on:click="breakLen < 59 ? breakLen++ : breakLen"
+      >
+        +
+      </button>
+      <p id="break-length">{{ breakLen }}</p>
     </div>
     <div id="session">
-    <label id="session-label">Session length</label>
-    <button id="session-decrement" v-on:click="minusSessionLen">-</button>
-    <button id="session-increment" v-on:click="plusSessionLen">+</button>
-    <p id="session-length">{{ sessionLen }}</p>
-    <label v-if="sessionRunning" id="timer-label">Session</label>
-    <label v-else id="timer-label">Break</label>
-
+      <label id="session-label">Session length</label>
+      <button id="session-decrement" v-on:click="minusSessionLen">-</button>
+      <button id="session-increment" v-on:click="plusSessionLen">+</button>
+      <p id="session-length">{{ sessionLen }}</p>
+      <label v-if="sessionRunning" id="timer-label">Session</label>
+      <label v-else id="timer-label">Break</label>
     </div>
     <div id="countdown">
-    <p id="time-left" :key="timeLeft">{{ timeLeft }}</p>
-
+      <p id="time-left" :key="timeLeft">{{ timeLeft }}</p>
     </div>
     <div id="buttons">
-    <button id="start_stop" v-on:click="startStop">start / stop</button>
-    <button id="reset" v-on:click="reset">reset</button>
-
+      <button id="start_stop" v-on:click="startStop">start / stop</button>
+      <button id="reset" v-on:click="reset">reset</button>
     </div>
     <audio
       id="beep"
