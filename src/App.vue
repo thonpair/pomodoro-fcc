@@ -1,19 +1,115 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <label id="break-label">Break length</label>
+    <label id="session-label">Session length</label>
+    <button
+      id="break-decrement"
+      v-on:click="breakLen > 1 ? breakLen-- : breakLen"
+    >
+      -
+    </button>
+    <button
+      id="break-increment"
+      v-on:click="breakLen < 59 ? breakLen++ : breakLen"
+    >
+      +
+    </button>
+    <button id="session-decrement" v-on:click="minusSessionLen">-</button>
+    <button id="session-increment" v-on:click="plusSessionLen">+</button>
+    <p id="break-length">{{ breakLen }}</p>
+    <p id="session-length">{{ sessionLen }}</p>
+    <label v-if="sessionRunning" id="timer-label">Session</label>
+    <label v-else id="timer-label">Break</label>
+    <p id="time-left" :key="timeLeft">{{ timeLeft }}</p>
+    <button id="start_stop" v-on:click="startStop">start / stop</button>
+    <button id="reset" v-on:click="reset">reset</button>
+    <audio
+      id="beep"
+      preload="auto"
+      src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+const DEF_BREAK = 5;
+const DEF_SESSION = 25;
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  data() {
+    return {
+      breakLen: DEF_BREAK,
+      sessionLen: DEF_SESSION,
+      running: false,
+      timeLeftSec: 600,
+      sessionRunning: true,
+    };
+  },
+  computed: {
+    timeLeft: {
+      get: function () {
+        let minutes = Math.floor(this.timeLeftSec / 60, 0);
+        minutes = minutes < 10 ? `0${minutes}` : minutes;
+        let secondes = this.timeLeftSec % 60;
+        secondes = secondes < 10 ? `0${secondes}` : secondes;
+        return `${minutes}:${secondes}`;
+      },
+      set: function (newTime) {
+        this.timeLeftSec = newTime * 60;
+      },
+    },
+  },
+  methods: {
+    playSound() {
+      let audioPlay = document.getElementById("beep");
+      audioPlay.play();
+    },
+    updateTimeLeft() {
+      this.timeLeftSec--;
+      if (this.timeLeftSec < 0) {
+        this.playSound();
+        if (this.sessionRunning) {
+          this.timeLeft = this.breakLen;
+        } else {
+          this.timeLeft = this.sessionLen;
+        }
+        this.sessionRunning = !this.sessionRunning;
+      }
+      this.timeOut = window.setTimeout(this.updateTimeLeft, 10);
+    },
+    plusSessionLen() {
+      if (this.sessionLen < 59) {
+        this.sessionLen++;
+        this.timeLeft = this.sessionLen;
+      }
+    },
+    minusSessionLen() {
+      if (this.sessionLen > 1) {
+        this.sessionLen--;
+        this.timeLeft = this.sessionLen;
+      }
+    },
+    startStop() {
+      if (this.running) {
+        clearTimeout(this.timeOut);
+      } else {
+        this.updateTimeLeft();
+      }
+      this.running = !this.running;
+    },
+    reset() {
+      if (this.running) {
+        clearTimeout(this.timeOut);
+      }
+      this.breakLen = DEF_BREAK;
+      this.sessionLen = DEF_SESSION;
+      this.timeLeft = this.sessionLen;
+    },
+  },
+  mounted() {
+    this.timeLeft = this.sessionLen;
+  },
+};
 </script>
 
 <style>
