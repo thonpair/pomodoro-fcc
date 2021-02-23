@@ -10,19 +10,19 @@
         >
           -
         </button>
+        <input type="number" id="break-length" min="1" max="59" v-model="breakLen" />
         <button
           id="break-increment"
           v-on:click="breakLen < 59 ? breakLen++ : breakLen"
         >
           +
         </button>
-        <input type="text" id="break-length" v-model="breakLen" />
       </div>
       <div id="session">
         <label id="session-label">Session length</label>
         <button id="session-decrement" v-on:click="minusSessionLen">-</button>
+        <input type="number" id="session-length" min="1" max="59" v-model="sessionLen" />
         <button id="session-increment" v-on:click="plusSessionLen">+</button>
-        <input type="text" id="session-length" v-model="sessionLen" />
       </div>
       <div id="buttons">
         <button id="start_stop" v-on:click="startStop">start / stop</button>
@@ -187,7 +187,6 @@ export default {
         ? this.sessionLen * 60
         : this.breakLen * 60;
       const rawTimeFraction = this.timeLeftSec / fullLen;
-      console.log(rawTimeFraction);
       return rawTimeFraction - (1 / fullLen) * (1 - rawTimeFraction);
     },
 
