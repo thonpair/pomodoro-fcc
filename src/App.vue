@@ -1,67 +1,71 @@
 <template>
   <div id="app">
-    <div id="break">
-      <label id="break-label">Break length</label>
-      <button
-        id="break-decrement"
-        v-on:click="breakLen > 1 ? breakLen-- : breakLen"
-      >
-        -
-      </button>
-      <button
-        id="break-increment"
-        v-on:click="breakLen < 59 ? breakLen++ : breakLen"
-      >
-        +
-      </button>
-      <p id="break-length">{{ breakLen }}</p>
+    <h1>Pomodoro clock</h1>
+    <div id="settings">
+      <div id="break">
+        <label id="break-label">Break length</label>
+        <button
+          id="break-decrement"
+          v-on:click="breakLen > 1 ? breakLen-- : breakLen"
+        >
+          -
+        </button>
+        <button
+          id="break-increment"
+          v-on:click="breakLen < 59 ? breakLen++ : breakLen"
+        >
+          +
+        </button>
+        <input type="text" id="break-length" v-model="breakLen" />
+      </div>
+      <div id="session">
+        <label id="session-label">Session length</label>
+        <button id="session-decrement" v-on:click="minusSessionLen">-</button>
+        <button id="session-increment" v-on:click="plusSessionLen">+</button>
+        <input type="text" id="session-length" v-model="sessionLen" />
+      </div>
+      <div id="buttons">
+        <button id="start_stop" v-on:click="startStop">start / stop</button>
+        <button id="reset" v-on:click="reset">reset</button>
+      </div>
     </div>
-    <div id="session">
-      <label id="session-label">Session length</label>
-      <button id="session-decrement" v-on:click="minusSessionLen">-</button>
-      <button id="session-increment" v-on:click="plusSessionLen">+</button>
-      <p id="session-length">{{ sessionLen }}</p>
-      
-    </div>
-        <div id="buttons">
-      <button id="start_stop" v-on:click="startStop">start / stop</button>
-      <button id="reset" v-on:click="reset">reset</button>
-    </div>
-    <div class="base-timer">
-      <svg
-        class="base-timer__svg"
-        viewBox="0 0 100 100"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g class="base-timer__circle">
-          <circle
-            class="base-timer__path-elapsed"
-            cx="50"
-            cy="50"
-            r="45"
-          ></circle>
-          <path
-            id="base-timer-path-remaining"
-            class="base-timer__path-remaining"
-            v-bind:class="remainingPathColor "
-            :stroke-dasharray="circleDasharray"
-            d="
+    <div id="clock">
+      <div class="base-timer">
+        <svg
+          class="base-timer__svg"
+          viewBox="0 0 100 100"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g class="base-timer__circle">
+            <circle
+              class="base-timer__path-elapsed"
+              cx="50"
+              cy="50"
+              r="45"
+            ></circle>
+            <path
+              id="base-timer-path-remaining"
+              class="base-timer__path-remaining"
+              v-bind:class="remainingPathColor"
+              :stroke-dasharray="circleDasharray"
+              d="
           M 50, 50
           m -45, 0
           a 45,45 0 1,0 90,0
           a 45,45 0 1,0 -90,0
         "
-          ></path>
-        </g>
-      </svg>
-              <span v-if="sessionRunning" id="timer-label" class="base-timer__title">Session</span>
+            ></path>
+          </g>
+        </svg>
+        <span v-if="sessionRunning" id="timer-label" class="base-timer__title"
+          >Session</span
+        >
         <span v-else id="timer-label" class="base-timer__title">Break</span>
-      <span id="base-timer-label" class="base-timer__label">
-      {{
-        timeLeft
-      }}</span>
+        <span id="base-timer-label" class="base-timer__label">
+          {{ timeLeft }}</span
+        >
+      </div>
     </div>
-
     <audio
       id="beep"
       preload="auto"
@@ -102,7 +106,7 @@ export default {
       timeLeftSec: 600,
       sessionRunning: true,
       remainingPathColor: COLOR_CODES.info.color,
-      circleDasharray: FULL_DASH_ARRAY
+      circleDasharray: FULL_DASH_ARRAY,
     };
   },
   computed: {
@@ -179,10 +183,12 @@ export default {
     },
 
     calculateTimeFraction() {
-      const fullLen = this.sessionRunning ? this.sessionLen*60 : this.breakLen*60
+      const fullLen = this.sessionRunning
+        ? this.sessionLen * 60
+        : this.breakLen * 60;
       const rawTimeFraction = this.timeLeftSec / fullLen;
-      console.log(rawTimeFraction)
-      return (rawTimeFraction - (1 / fullLen) * (1 - rawTimeFraction));
+      console.log(rawTimeFraction);
+      return rawTimeFraction - (1 / fullLen) * (1 - rawTimeFraction);
     },
 
     setCircleDasharray() {
@@ -200,8 +206,14 @@ export default {
 <style>
 body {
   font-family: sans-serif;
-  display: grid;
   height: 100vh;
+}
+h1{
+  text-align: center;
+}
+
+#clock {
+  display: grid;
   place-items: center;
 }
 
