@@ -10,7 +10,13 @@
         >
           -
         </button>
-        <input type="number" id="break-length" min="1" max="59" v-model="breakLen" />
+        <input
+          type="number"
+          id="break-length"
+          min="1"
+          max="59"
+          v-model="breakLen"
+        />
         <button
           id="break-increment"
           v-on:click="breakLen < 59 ? breakLen++ : breakLen"
@@ -21,13 +27,19 @@
       <div id="session">
         <label id="session-label">Session length</label>
         <button id="session-decrement" v-on:click="minusSessionLen">-</button>
-        <input type="number" id="session-length" min="1" max="59" v-model="sessionLen" />
+        <input
+          type="number"
+          id="session-length"
+          min="1"
+          max="59"
+          v-model="sessionLen"
+        />
         <button id="session-increment" v-on:click="plusSessionLen">+</button>
       </div>
-      <div id="buttons">
-        <button id="start_stop" v-on:click="startStop">start / stop</button>
-        <button id="reset" v-on:click="reset">reset</button>
-      </div>
+    </div>
+    <div id="actions">
+      <button id="start_stop" v-on:click="startStop">start / stop</button>
+      <button id="reset" v-on:click="reset">reset</button>
     </div>
     <div id="clock">
       <div class="base-timer">
@@ -75,8 +87,8 @@
 </template>
 
 <script>
-const DEF_BREAK = 2;
-const DEF_SESSION = 1;
+const DEF_BREAK = 5;
+const DEF_SESSION = 25;
 
 const FULL_DASH_ARRAY = 283;
 const WARNING_THRESHOLD = 30;
@@ -207,8 +219,39 @@ body {
   font-family: sans-serif;
   height: 100vh;
 }
-h1{
+h1 {
   text-align: center;
+}
+
+#settings {
+  width: 27%;
+  margin: auto;
+}
+
+input {
+  width: 40px;
+}
+
+#settings > div > *{
+  padding: 5px;
+  margin: 5px;
+}
+
+#settings > div > label {
+  display: inline-block;
+  width: 40%;
+  padding-top: 10px;
+}
+
+#actions {
+  width: 16%;
+  margin: auto;
+  padding: 10px;
+}
+
+#actions > *{
+  padding: 5px;
+  margin: 5px;
 }
 
 #clock {
